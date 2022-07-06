@@ -1,0 +1,16 @@
+<launch>
+
+    <node pkg="rosserial_python" name="serial_node" type="serial_node.py" output="screen">
+        <param name="port" value="/dev/ttyUSB2" />
+        <param name="baud" value="57600" />
+    </node>
+
+    <!-- <node name="tf_broadcaster_imu" pkg="my_robot_controller" type="tf_broadcaster_imu.py" output="screen"/> -->
+
+    <node name="omni_robot" pkg="my_robot_controller" type="write_to_plc.py" output="screen"/>
+
+    <!-- Run the EKF Localization node -->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_navigation_node">
+        <rosparam command="load" file="$(find my_robot_controller)/src/ekf_localization.yaml"/>
+    </node>
+</launch>
